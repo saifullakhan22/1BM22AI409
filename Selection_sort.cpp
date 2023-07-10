@@ -43,7 +43,7 @@ void selectionSort(int array[], int size)
 // driver code
 int main()
 {
-    int data[] = {20, 12, 10, 15, 2};
+    int data[] = {20, 12, 10, 15, 2, 54, 45, 1, 45, 4,43,12,3,41,12,};
     int size = sizeof(data) / sizeof(data[0]);
     selectionSort(data, size);
     cout << "Sorted array in Acsending Order:\n";
