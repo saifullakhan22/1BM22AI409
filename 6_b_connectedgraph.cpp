@@ -1,4 +1,5 @@
 //Check if the given graph is connected or not using DFS method.
+//Check if the given graph is connected or not using DFS method.
 #include <iostream>
 #include <unordered_set>
 #include <vector>
@@ -15,11 +16,8 @@ void dfs(std::unordered_map<std::string, std::vector<std::string>>& graph, const
     }
 }
 
-bool allNodesVisitedFromFirstNode(std::unordered_map<std::string, std::vector<std::string>>& graph) {
+bool allNodesReachable(std::unordered_map<std::string, std::vector<std::string>>& graph, const std::string& start_node) {
     std::unordered_set<std::string> visited;
-
-    // Choose the first node as a starting point for DFS
-    std::string start_node = graph.begin()->first;
 
     dfs(graph, start_node, visited);
 
@@ -30,16 +28,21 @@ int main() {
     std::unordered_map<std::string, std::vector<std::string>> graph = {
         {"A", {"B", "C"}},
         {"B", {"C", "D"}},
-        {"C", {"D", ""}},
-        {"D", {""}},
-        {"E", {""}}
+        {"C", {"D", "E"}},
+        {"D", {"E"}},
+        {"E", {"F"}},
+        {"G", {"M"}}
     };
 
-    if (allNodesVisitedFromFirstNode(graph)) {
-        std::cout << "Graph is connected" << std::endl;
+    std::string start_node = "A";
+
+    if (allNodesReachable(graph, start_node)) {
+        std::cout << "Connected Graph";
     } else {
-        std::cout << "Graph is not connected" << std::endl;
+        std::cout << "Disconnected Graph";
     }
 
     return 0;
+}
+
 }
