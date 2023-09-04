@@ -1,49 +1,62 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 class Graph {
 public:
     int V;
-    vector<vector<int>> adjacencyMatrix;
+    int** adjacencyMatrix;
 
     Graph(int vertices) {
         V = vertices;
-        adjacencyMatrix.resize(V, vector<int>(V, 0));
+        adjacencyMatrix = new int*[V];
+        for (int i = 0; i < V; ++i) {
+            adjacencyMatrix[i] = new int[V]();
+        }
     }
 
     void addEdge(int u, int v) {
         adjacencyMatrix[u][v] = 1;
     }
 
-    void topologicalSortUtil(int v, vector<int>& visited, vector<int>& stack) {
+    void topologicalSortUtil(int v, int* visited, int* stack, int& index) {
         visited[v] = 1;
 
         for (int i = 0; i < V; i++) {
             if (adjacencyMatrix[v][i] && !visited[i]) {
-                topologicalSortUtil(i, visited, stack);
+                topologicalSortUtil(i, visited, stack, index);
             }
         }
 
-        stack.push_back(v);
+        stack[index++] = v;
     }
 
     void topologicalSort() {
-        vector<int> visited(V, 0);
-        vector<int> stack;
+        int* visited = new int[V]();
+        int* stack = new int[V]();
+        int index = 0;
 
         for (int i = 0; i < V; i++) {
             if (!visited[i]) {
-                topologicalSortUtil(i, visited, stack);
+                topologicalSortUtil(i, visited, stack, index);
             }
         }
 
         cout << "Topological Ordering: ";
-        for (int i = stack.size() - 1; i >= 0; i--) {
+        for (int i = index - 1; i >= 0; i--) {
             cout << stack[i] << " ";
         }
         cout << endl;
+
+        delete[] visited;
+        delete[] stack;
+    }
+
+    ~Graph() {
+        for (int i = 0; i < V; ++i) {
+            delete[] adjacencyMatrix[i];
+        }
+        delete[] adjacencyMatrix;
     }
 };
 
