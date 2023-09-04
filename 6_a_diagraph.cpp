@@ -1,20 +1,20 @@
 #include <iostream>
-#include <vector>
 #include <queue>
-#include <unordered_set>
 
 using namespace std;
 
+const int MAX_VERTICES = 7;
+
 class Graph {
 public:
-    Graph(int vertices) : V(vertices), adjList(vertices) {}
+    Graph(int vertices) : V(vertices) {}
 
     void addEdge(int src, int dest) {
-        adjList[src].push_back(dest);
+        adjacencyList[src][dest] = true;
     }
 
     void BFS(int startNode) {
-        vector<bool> visited(V, false);
+        bool visited[MAX_VERTICES] = {false};
         queue<int> q;
         q.push(startNode);
         visited[startNode] = true;
@@ -24,8 +24,8 @@ public:
             q.pop();
             cout << current << " ";
 
-            for (int neighbor : adjList[current]) {
-                if (!visited[neighbor]) {
+            for (int neighbor = 0; neighbor < V; ++neighbor) {
+                if (adjacencyList[current][neighbor] && !visited[neighbor]) {
                     q.push(neighbor);
                     visited[neighbor] = true;
                 }
@@ -35,18 +35,16 @@ public:
 
 private:
     int V; // Number of vertices
-    vector<vector<int>> adjList;
+    bool adjacencyList[MAX_VERTICES][MAX_VERTICES] = {false};
 };
 
 int main() {
     int vertices = 7; // Total number of vertices
-    int edges = 8;    // Total number of edges
 
     Graph graph(vertices);
 
     // Adding edges to the graph
     graph.addEdge(0, 1);
-  //  graph.addEdge(0, 2);
     graph.addEdge(1, 3);
     graph.addEdge(1, 4);
     graph.addEdge(2, 5);
