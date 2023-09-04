@@ -5,9 +5,11 @@
 void dfs(const std::unordered_map<std::string, std::unordered_set<std::string>>& graph, const std::string& node, std::unordered_set<std::string>& visited) {
     visited.insert(node);
 
-    for (const std::string& neighbor : graph.at(node)) {
-        if (visited.find(neighbor) == visited.end()) {
-            dfs(graph, neighbor, visited);
+    if (graph.find(node) != graph.end()) {
+        for (const std::string& neighbor : graph.at(node)) {
+            if (visited.find(neighbor) == visited.end()) {
+                dfs(graph, neighbor, visited);
+            }
         }
     }
 }
@@ -26,20 +28,22 @@ bool isGraphConnected(const std::unordered_map<std::string, std::unordered_set<s
 }
 
 int main() {
-    std::unordered_map<std::string, std::unordered_set<std::string>> graph = {
-        {"A", {"B", "C"}},
-        {"B", {"C", "D"}},
-        {"C", {"D", "E"}},
-        {"D", {"E"}},
-        {"E", {"F"}},
-        {"G", {"M"}}
-    };
+std::unordered_map<std::string, std::unordered_set<std::string>> connectedGraph = {
+    {"A", {"B", "C"}},
+    {"B", {"A", "C", "D"}},
+    {"C", {"A", "B", "D", "E"}},
+    {"D", {"B", "C", "E"}},
+    {"E", {"C", "D", "F"}},
+    {"F", {"E"}}
+};
 
-    if (isGraphConnected(graph)) {
-        std::cout << "Connected Graph";
-    } else {
-        std::cout << "Disconnected Graph";
-    }
+std::string start_node = "A";
+
+if (connectedGraph.find(start_node) != connectedGraph.end() && isGraphConnected(connectedGraph)) {
+    std::cout << "Connected Graph";
+} else {
+    std::cout << "Disconnected Graph";
+}
 
     return 0;
 }
